@@ -1,0 +1,5 @@
+{
+    "include": ["pytemp"],
+    "exclude": ["tests"],
+    "reportMissingTypeStubs": true
+}

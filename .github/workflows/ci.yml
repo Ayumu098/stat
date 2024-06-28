@@ -1,0 +1,38 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install poetry
+        poetry install
+
+    - name: Lint and format
+      run: |
+        poetry run ruff check .
+        poetry run black --check .
+        poetry run isort --check-only .
+
+    - name: Run tests
+      run: |
+        poetry run pytest
+
+    - name: Type check
+      run: |
+        poetry run pyright
+
+    - name: Security check
+      run: |
+        poetry run bandit -r pytemp
